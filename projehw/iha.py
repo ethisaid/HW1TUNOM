@@ -44,7 +44,7 @@ def serve_telem():                  # Telemetri sunucusu
                     break                                         # Hata — çık
                 time.sleep(TELEM_INTERVAL)                        # Bekle
 
-def open_camera():                   # Kamera açmayı dene
+def open_camera():                   
     try:
         cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)  
     except:
@@ -57,8 +57,8 @@ def open_camera():                   # Kamera açmayı dene
     return cap
 
 def synthetic_frame(w=640, h=360, tick=0):        # Kamera yoksa sentetik kare
-    img = np.zeros((h, w, 3), np.uint8)           # Siyah ekran
-    x = (tick * 10) % (w + 100) - 50               # Hareketli kutu
+    img = np.zeros((h, w, 3), np.uint8)           
+    x = (tick * 10) % (w + 100) - 50               
     cv2.rectangle(img,(max(0,x),h//2-20),(min(w,x+100),h//2+20),(0,255,0),-1)
     cv2.putText(img,time.strftime("Synthetic %H:%M:%S"),(10,30),
                 cv2.FONT_HERSHEY_SIMPLEX,0.7,(255,255,255),2) # Saat yaz
@@ -100,7 +100,7 @@ def serve_video():                 # Video sunucusu
                 size = len(data).to_bytes(4,"big")              
 
                 try:
-                    conn.sendall(size + data)                   # Önce uzunluk sonra veri
+                    conn.sendall(size + data)                   
                 except:
                     break
 
@@ -113,7 +113,7 @@ def main():                          # Program giriş
     t1 = threading.Thread(target=serve_telem, daemon=True) # Telemetri thread
     t2 = threading.Thread(target=serve_video, daemon=True) # Video thread
     t1.start(); t2.start()             # Başlat
-    print("[DRONE] Started")           # Bilgi
+    print("[DRONE] Started")           # Bilgi ver
     try:
         while t1.is_alive() and t2.is_alive():  
             time.sleep(0.5)
@@ -125,3 +125,4 @@ def main():                          # Program giriş
 
 if __name__ == "__main__":             
     main()                             
+
