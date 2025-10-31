@@ -44,8 +44,8 @@ def recv_video():                   # video alma thread fonksiyonu
         s.connect((HOST, VIDEO_PORT))# IHA video portuna bağlan
         while not stop_flag.is_set():
             try:
-                hdr = s.recv(4)      # önce 4 byte boyut al
-                if len(hdr) < 4:     # eksik geldiyse bağlantı kapanmış
+                hdr = s.recv(4)      
+                if len(hdr) < 4:     
                     print("[GCS] video closed")
                     break
                 size = int.from_bytes(hdr, "big")  
@@ -55,11 +55,11 @@ def recv_video():                   # video alma thread fonksiyonu
                     if not part: break
                     buf += part
                 frame = cv2.imdecode(np.frombuffer(buf, np.uint8), cv2.IMREAD_COLOR)  
-                # byte -> OpenCV görüntü
+                
 
-                if frame is not None:           # görüntü geldiyse
-                    cv2.imshow("VIDEO", frame)  # pencereye bas
-                    if cv2.waitKey(1) == 27:    # ESC çıkış
+                if frame is not None:           
+                    cv2.imshow("VIDEO", frame)  
+                    if cv2.waitKey(1) == 27:    
                         stop_flag.set()
                         break
             except Exception as e:
@@ -67,7 +67,7 @@ def recv_video():                   # video alma thread fonksiyonu
                 break
         cv2.destroyAllWindows()                 # pencereyi kapat
 
-def main():                     # GCS ana fonksiyon
+def main():                     
     t1 = threading.Thread(target=recv_telemetry, daemon=True) # telem thread
     t2 = threading.Thread(target=recv_video, daemon=True)     # video thread
     t1.start(); t2.start()            # threadleri başlat
@@ -83,3 +83,4 @@ def main():                     # GCS ana fonksiyon
 
 if __name__ == "__main__":
     main()
+
