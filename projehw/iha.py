@@ -74,7 +74,7 @@ def serve_video():                 # Video sunucusu
         print(f"[DRONE] Video client {addr}")                   
 
         cap = open_camera()                                     # Kamera aç
-        use_synth = not cap.isOpened()                          # Açılamıyorsa sentetik
+        use_synth = not cap.isOpened()                          # Açılamıyorsa sentetik oluşturur
         tick = 0                                                
 
         with conn:
@@ -82,9 +82,9 @@ def serve_video():                 # Video sunucusu
             period = 1.0 / max(1, FPS)                          # Kare aralığı
             while not stop_flag.is_set():
                 if use_synth:
-                    frame = synthetic_frame(640,360,tick)       # Sentetik kare
+                    frame = synthetic_frame(640,360,tick)       
                 else:
-                    ok, frame = cap.read()                      # Kameradan oku
+                    ok, frame = cap.read()                      
                     if not ok:
                         use_synth = True
                         continue
@@ -110,8 +110,8 @@ def serve_video():                 # Video sunucusu
         if cap.isOpened(): cap.release()                        
 
 def main():                          # Program giriş
-    t1 = threading.Thread(target=serve_telem, daemon=True) # Telemetri thread
-    t2 = threading.Thread(target=serve_video, daemon=True) # Video thread
+    t1 = threading.Thread(target=serve_telem, daemon=True) # Telemetri thread açtı
+    t2 = threading.Thread(target=serve_video, daemon=True) # Video thread açtı
     t1.start(); t2.start()             # Başlat
     print("[DRONE] Started")           # Bilgi ver
     try:
@@ -125,4 +125,5 @@ def main():                          # Program giriş
 
 if __name__ == "__main__":             
     main()                             
+
 
