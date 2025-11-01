@@ -5,15 +5,15 @@ import cv2                         # video görüntüleme
 import numpy as np                 # buffer işlemleri için
 import time                        # bekleme amaçlı
 
-HOST = "127.0.0.1"                 # bağlanılacak IHA IP
-TELEM_PORT = 9000                  # telemetri TCP port
-VIDEO_PORT = 9001                  # video TCP port
+HOST = "127.0.0.1"                 # bağlanılacak IHA IP set
+TELEM_PORT = 9000                  # telemetri TCP port set
+VIDEO_PORT = 9001                  # video TCP port set
 
 stop_flag = threading.Event()      # thread durdurma sinyali
 
 def recv_telemetry():              # telemetri alma thread fonksiyonu
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:   # TCP soketi oluştur
-        s.settimeout(5)              # bağlantı zaman aşımı
+        s.settimeout(5)              # bağlantı zaman aşımı saniye set
         print("[GCS] Telemetry connect")  
         s.connect((HOST, TELEM_PORT)) # IHA telem portuna bağlan
         buffer = b""                 
@@ -41,7 +41,7 @@ def recv_video():                   # video alma thread fonksiyonu
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:   # TCP soketi
         s.settimeout(5)              
         print("[GCS] Video connect")
-        s.connect((HOST, VIDEO_PORT))# IHA video portuna bağlan
+        s.connect((HOST, VIDEO_PORT)) # IHA video portuna bağlan
         while not stop_flag.is_set():
             try:
                 hdr = s.recv(4)      
@@ -83,4 +83,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
